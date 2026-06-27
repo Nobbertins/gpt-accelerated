@@ -3,7 +3,6 @@
 
     #include <vector>
     #include "autograd.h"
-
     class GPT{
         public:
             GPT(const int n_layer, const int n_embd, const int block_size, const int n_head, const int vocab_size) : 
@@ -21,7 +20,11 @@
             const int n_head;
             const int head_dim;
             const int vocab_size;
-            using Matrix = std::vector<std::vector<std::shared_ptr<Value>>>;
+            
+            
+            using Vector = std::vector<std::shared_ptr<Value>>;
+            using Matrix = std::vector<Vector>;
+            
             Matrix wte;
             Matrix wpe;
             Matrix lm_head;
@@ -34,13 +37,14 @@
                 Matrix mlp2;
             };
             std::vector<Transformer_Layer> layers;
-            int get_num_of_params();
+            //returns all parameters in one list
+            Vector get_params();
             //vector computations
-            std::vector<std::shared_ptr<Value>> linear(const std::vector<std::shared_ptr<Value>> &x, const Matrix &m);
-            std::vector<std::shared_ptr<Value>> rmsnorm(const std::vector<std::shared_ptr<Value>> &x);
-            std::vector<std::shared_ptr<Value>> softmax(const std::vector<std::shared_ptr<Value>> &x);
+            static Vector linear(const Vector &x, const Matrix &m);
+            static Vector rmsnorm(const Vector &x);
+            static Vector softmax(const Vector &x);
             //the forward pass
-            std::vector<std::shared_ptr<Value>> forward(int token_id, int pos_id, std::vector<std::vector<std::vector<std::shared_ptr<Value>>>> &keys, std::vector<std::vector<std::vector<std::shared_ptr<Value>>>> &values);
+            Vector forward(int token_id, int pos_id, std::vector<std::vector<Vector>> &keys, std::vector<std::vector<Vector>> &values);
         private:
             void build_layers();
             static Matrix generate_matrix(const int nout, const int nin, const float stdev = 0.08f);

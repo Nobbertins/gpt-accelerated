@@ -7,7 +7,7 @@
 void buildTopo(std::shared_ptr<Value> v, std::vector<std::shared_ptr<Value>> &topo, std::unordered_set<std::shared_ptr<Value>> &visited){
     if(visited.find(v) == visited.end()){
         visited.insert(v);
-        for(auto child : v->children){
+        for(auto& child : v->children){
             buildTopo(child, topo, visited);
         }
         topo.push_back(v);
@@ -20,7 +20,7 @@ void backward(std::shared_ptr<Value> v){ //assumes v->grad is set
     buildTopo(v, topo, visited);
     std::reverse(topo.begin(), topo.end());
     //apply backprop
-    for(auto node : topo){
+    for(auto& node : topo){
         for(int i = 0; i < node->children.size(); i++){
             (node->children[i])->grad += node->grad * node->localGrads[i];
         }
