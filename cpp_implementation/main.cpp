@@ -11,8 +11,28 @@
 #include "gpt.h"
 #include "tokenizer.h"
 #include "timer.h"
+#include "arena.h"
 
 int main(){
+
+    //test
+    Arena grad_arena(9999);
+    Arena data_arena(9999);
+    Arena tensor_arena(9999);
+    Tensor<float> mat({3, 2}, grad_arena, data_arena, tensor_arena);
+    mat[{0, 0}] = 5.6;
+    
+    Tensor<float> mat2({3, 2}, grad_arena, data_arena, tensor_arena);
+    mat2[{0, 0}] = 2.3;
+
+    Tensor<float> mat3 = mat + mat2;
+    for(auto i{0uz}; i < mat3.total_size; i++) mat3.grads[i] = 1.0f;
+    mat3.backward();
+    std::cout << mat3[{0, 0}] << ", " << mat.grads[0] << std::endl;
+
+    return 0;
+
+
     //start timer
     Timer t;
     //random numbers!!!

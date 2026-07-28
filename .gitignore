@@ -1,5 +1,10 @@
+microgpt.py
 microgptOriginal.py
-torch.py
+pytorch_test.py
+__pycache__
 input.txt
 main
 venv
+perf.data
+optimized
+optimized_debug

@@ -4,9 +4,8 @@
 #include "autograd.h"
 
 //builds topo sort of graph
-void buildTopo(std::shared_ptr<Value> v, std::vector<std::shared_ptr<Value>> &topo, std::unordered_set<std::shared_ptr<Value>> &visited){
-    if(visited.find(v) == visited.end()){
-        visited.insert(v);
+void buildTopo(std::shared_ptr<Value> &v, std::vector<std::shared_ptr<Value>> &topo, std::unordered_set<std::shared_ptr<Value>> &visited){
+    if(visited.insert(v).second){
         for(auto& child : v->children){
             buildTopo(child, topo, visited);
         }
@@ -14,7 +13,7 @@ void buildTopo(std::shared_ptr<Value> v, std::vector<std::shared_ptr<Value>> &to
     }
 }
 
-void backward(std::shared_ptr<Value> v){ //assumes v->grad is set
+void backward(std::shared_ptr<Value> &v){ //assumes v->grad is set
     std::vector<std::shared_ptr<Value>> topo;
     std::unordered_set<std::shared_ptr<Value>> visited;
     buildTopo(v, topo, visited);
@@ -26,8 +25,6 @@ void backward(std::shared_ptr<Value> v){ //assumes v->grad is set
         }
     }
 }
-
-
 
 std::shared_ptr<Value> operator+(const std::shared_ptr<Value> a, const std::shared_ptr<Value> b){
     std::vector<std::shared_ptr<Value>> children = {a, b};
