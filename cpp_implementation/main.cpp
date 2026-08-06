@@ -25,7 +25,7 @@ int main(){
     Tensor<float> mat2({3, 2}, grad_arena, data_arena, tensor_arena);
     mat2[{0, 0}] = 2.3;
 
-    Tensor<float> mat3 = mat + mat2;
+    Tensor<float> mat3 = mat.matmul(mat2);
     for(auto i{0uz}; i < mat3.total_size; i++) mat3.grads[i] = 1.0f;
     mat3.backward();
     std::cout << mat3[{0, 0}] << ", " << mat.grads[0] << std::endl;
