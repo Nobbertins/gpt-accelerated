@@ -1,4 +1,4 @@
-Project still in progress.
+Project still in progress (currently on CPU implementation step debugging tensor operations).
 
 I don’t know much about AI, but I came across Andrej Karpathy’s [microgpt](https://gist.github.com/karpathy/8627fe009c40f57531cb18360106ce95) a few months ago and I thought it was really cool. He implements GPT-2 (one of the first LLMs) and runs training and inference on it in only 200 lines of Python with no external libraries. That last part is my favorite: everything was done from scratch. This lets someone like me who can read Python but doesn’t know much about AI fully understand every small detail about how an LLM works fundamentally.
 
